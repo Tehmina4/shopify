@@ -1,0 +1,94 @@
+project Link:-
+https://wickelrucksack.myshopify.com/admin/themes/83709821005?key=snippets/product-card-grid.liquid
+https://ddtest12334.myshopify.com/admin/themes/81444208710?key=templates/page.sections.liquid
+https://youthandearth.myshopify.com/admin/themes/109893025955?key=templates%2Fproduct.liquid
+	store:Ebiz Shopify partner ==>
+	id:developer@ebizbiz.com
+	Password:Kaqred-rektyc-9mokwo
+
+image downloader link:  https://imagecyborg.com/
+Product tags:-
+
+ {% for tag in product.tags %}
+  {{tag}}<br>
+  {% endfor %}
+  
+{% for i in (1..10) %}
+  {% capture tagd %}tag{{i}}{% endcapture %}
+  {% capture label %}label{{i}}{% endcapture %}
+  {% if settings[tagd] != blank %}
+  	{% if product.tags contains settings[tagd] %}
+      <div class="customize-block"><p>{{settings[label]}}</p></div>
+      {% break %}
+  	{% endif %}
+  {% endif %}
+{% endfor %} 
+
+colour filtter:-
+
+<script>
+  $(document).ready(function(){
+  	 var pTitle = "{{pdmain.title | escape}}";
+     var base_url="{{shop.url}}";
+         console.log(base_url);
+   console.log('pTitle=>', pTitle);
+  	var mainImage = $('.product-template__container .container');
+  	var thumbImage = $('.product-template__container .product-single__thumbnails-slider-track');
+	var images=[];
+		 {% for img in pdmain.images %}
+  			images.push({url: "{{ img | img_url:'small' }}", alt: '{{ img.alt }}'});
+         {% endfor %} 
+             
+         if(jQuery('.selector-wrapper .single-option-selector').length > 0) {
+			$('.selector-wrapper .single-option-selector').change(function(){
+                         
+            	mainImage.empty();
+			    thumbImage.empty();
+                var selected_img = $(this).val();	
+		 		var arr = []; 
+                var ct = 0;
+                var addImage = $.each( images, function( i, image ) {
+                         
+                	 var alt = images[i].alt, url = images[i].url;
+                         console.log(alt + '-' + url);
+                     if (alt == selected_img || alt==pTitle) {
+                     	ct++;
+                         if(ct == 1){
+                        	var mainimage =' <img class="feature-row__image lazyload"';
+                              mainimage +=' src="' + url.replace('_small', '_1024x') + '"';
+                              mainimage +=' data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"';
+                              mainimage +=' alt="'+ alt +'" data-sizes="auto">';
+                        	}
+                          
+                          var thumbimage = '<li class="product-single__thumbnails-item">';
+                         	  thumbimage += '<a href="' + url.replace('_small', '_1024x') + '"';
+                              thumbimage += 'class="text-link product-single__thumbnail">';
+                              thumbimage += '<img class="product-single__thumbnail-image" src="' + url.replace('_small', '_1024x') + '" alt="'+alt+'">';
+                              thumbimage += ' </a></li>';
+                              
+                         	mainImage.html(mainimage);
+              				thumbImage.append(thumbimage);  	
+                    }
+                       
+                });
+                
+      			arr.push(addImage);
+  				changeimage();
+            });
+        }
+  });
+  
+  function changeimage(){
+    $('.product-single__thumbnails-item a').on('click', function(e) { 
+      	e.preventDefault();
+      	var imgsrc = $(this).attr('href');
+      	$('.feature-row__image').attr('src',imgsrc);
+      
+       	//$(this).attr('href'), null, $('.product-single__thumbnail-image')[0];
+      });  
+    return false;
+  }
+</script>
+
+
+
